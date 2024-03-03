@@ -4418,14 +4418,19 @@ adc1:
 adc2:
 #   Analog input pins connected to the sensor. These parameters must
 #   be provided.
+#scale_adc1: 10000.0
+#scale_adc2: 10000.0
+#   Individual scaling factors for the two analog inputs. These factors
+#   are applied to the analog values before adding them into a combined
+#   raw value. The default is 10000.0 for both scaling factors.
 #cal_dia1: 1.50
 #cal_dia2: 2.00
 #   The calibration values (in mm) for the sensors. The default is
 #   1.50 for cal_dia1 and 2.00 for cal_dia2.
-#raw_dia1: 9500
-#raw_dia2: 10500
-#   The raw calibration values for the sensors. The default is 9500
-#   for raw_dia1 and 10500 for raw_dia2.
+#raw_dia1: 9500.0
+#raw_dia2: 10500.0
+#   The raw calibration values for the sensors. The default is 9500.0
+#   for raw_dia1 and 10500.0 for raw_dia2.
 #default_nominal_filament_diameter: 1.75
 #   The nominal filament diameter. This parameter must be provided.
 #max_difference: 0.200

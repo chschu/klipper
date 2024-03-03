@@ -15,10 +15,12 @@ class HallFilamentWidthSensor:
         self.reactor = self.printer.get_reactor()
         self.pin1 = config.get('adc1')
         self.pin2 = config.get('adc2')
-        self.dia1=config.getfloat('Cal_dia1', 1.5)
-        self.dia2=config.getfloat('Cal_dia2', 2.0)
-        self.rawdia1=config.getint('Raw_dia1', 9500)
-        self.rawdia2=config.getint('Raw_dia2', 10500)
+        self.scale_adc1 = config.getfloat('scale_adc1', 10000.0)
+        self.scale_adc2 = config.getfloat('scale_adc2', 10000.0)
+        self.dia1=config.getfloat('cal_dia1', 1.5)
+        self.dia2=config.getfloat('cal_dia2', 2.0)
+        self.rawdia1=config.getfloat('raw_dia1', 9500.0)
+        self.rawdia2=config.getfloat('raw_dia2', 10500.0)
         self.MEASUREMENT_INTERVAL_MM=config.getint('measurement_interval',10)
         self.nominal_filament_dia = config.getfloat(
             'default_nominal_filament_diameter', above=1)
@@ -85,11 +87,11 @@ class HallFilamentWidthSensor:
 
     def adc_callback(self, read_time, read_value):
         # read sensor value
-        self.lastFilamentWidthReading = round(read_value * 10000)
+        self.lastFilamentWidthReading = read_value * self.scale_adc1
 
     def adc2_callback(self, read_time, read_value):
         # read sensor value
-        self.lastFilamentWidthReading2 = round(read_value * 10000)
+        self.lastFilamentWidthReading2 = read_value * self.scale_adc2
         # calculate diameter
         diameter_new = round((self.dia2 - self.dia1)/
             (self.rawdia2-self.rawdia1)*
@@ -202,7 +204,7 @@ class HallFilamentWidthSensor:
 
     def cmd_Get_Raw_Values(self, gcmd):
         response = "ADC1="
-        response +=  (" "+str(self.lastFilamentWidthReading))
+        response +=  (str(self.lastFilamentWidthReading))
         response +=  (" ADC2="+str(self.lastFilamentWidthReading2))
         response +=  (" RAW="+
                       str(self.lastFilamentWidthReading
